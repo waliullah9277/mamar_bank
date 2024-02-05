@@ -7,6 +7,7 @@ colorama
 coloredlogs
 crispy-bootstrap5
 distlib
+dj-database-url
 Django
 django-crispy-forms
 django-environ
@@ -38,6 +39,7 @@ platformdirs
 pooch
 protobuf
 psycopg2
+psycopg2-binary
 PyAutoGUI
 PyGetWindow
 PyMatting
@@ -64,6 +66,7 @@ sympy
 tempmail-client
 tifffile
 tqdm
+typing_extensions
 tzdata
 urllib3
 virtualenv
