@@ -34,6 +34,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ['https://mamar-bank-ytur.onrender.com','https://*.127.0.0.1']
 
 
 # Application definition
