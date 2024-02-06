@@ -204,6 +204,7 @@ class PayLoanView(LoginRequiredMixin, View):
                 user_account.balance -= loan.amount
                 loan.balance_after_transaction = user_account.balance
                 user_account.save()
+                messages.success(self.request, f'Your Loan pay has been successfully!')
                 loan.loan_approved = True
                 loan.transaction_type = LOAN_PAID
                 loan.save()
@@ -228,7 +229,7 @@ class LoanListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class TransferBalanceView(View):
+class TransferBalanceView(LoginRequiredMixin, View):
     template_name = 'transactions/transfer_balance.html'
 
     def get(self, request):
