@@ -270,6 +270,7 @@ class TransferBalanceView(View):
                 messages.success(request, f'{amount} $ Successfully Sended !')
 
                 send_transaction_email(self.request.user, amount, 'Transfer Balance', 'transactions/transfer_sender_email.html')
+                send_transaction_email(receiver_user, amount, 'Transfer Balance', 'transactions/transfer_receiver_email.html')
 
             except UserBankAccount.DoesNotExist:
                 messages.error(request, f'Does not exist')
