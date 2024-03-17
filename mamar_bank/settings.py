@@ -86,12 +86,12 @@ WSGI_APPLICATION = 'mamar_bank.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 
@@ -107,11 +107,11 @@ WSGI_APPLICATION = 'mamar_bank.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': dj_database_url.config(      
-        default='postgres://mamarbank_vv9l_user:ylUneUjN6pez7nhrkgi4BJWLMj2KWFM4@dpg-cn0e49la73kc7391qkdg-a.oregon-postgres.render.com/mamarbank_vv9l',
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(      
+#         default='postgres://mamarbank_vv9l_user:ylUneUjN6pez7nhrkgi4BJWLMj2KWFM4@dpg-cn0e49la73kc7391qkdg-a.oregon-postgres.render.com/mamarbank_vv9l',
+#     )
+# }
 
 
 # Password validation

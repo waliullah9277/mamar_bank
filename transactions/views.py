@@ -274,7 +274,7 @@ class TransferBalanceView(LoginRequiredMixin, View):
                 send_transaction_email(receiver_user.user, amount, 'Receive Balance', 'transactions/transfer_receiver_email.html')
 
             except UserBankAccount.DoesNotExist:
-                messages.error(request, f'Does not exist')
+                messages.error(request, f'No User Found ! Please Correct receiver id')
                 return redirect('transfer_balance')
 
         return redirect('transction_report')
