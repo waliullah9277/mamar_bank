@@ -120,3 +120,12 @@ class UserUpdateForm(forms.ModelForm):
             user_address.country = self.cleaned_data['country']
             user_address.save()
         return user
+    
+    
+
+
+# class ProfileUpdateForm(forms.ModelForm):
+#     class Meta:
+#         model = Profile
+#         fields = ['image', 'bio']
+

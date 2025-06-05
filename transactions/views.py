@@ -81,33 +81,7 @@ class DepositeMoneyView(TrasnctionMixinView):
         return super().form_valid(form)
 
 
-# class WithdrawalMoneyView(TrasnctionMixinView):
-#     form_class = WithdrawForm
-#     title = 'Withdrawal Money'
 
-#     def get_initial(self):
-#         initial = {'transaction_type': WITHDRAWAL}
-#         return initial
-
-#     def form_valid(self, form):
-#         rupt = UserBankAccount().objects.get('account')
-#         print(rupt.account)
-#         if rupt.bankrupt:
-#             rupt.bankrupt = True
-#             rupt.save()
-#             messages.error(self.request, 'This Bank is Rupt Now!')
-#         else:
-#             amount = form.cleaned_data.get('amount')
-#             self.request.user.account.balance -= form.cleaned_data.get('amount')
-
-#             self.request.user.account.save(
-#                 update_fields=['balance']
-#             )
-
-#             messages.success(
-#                 self.request, f'{amount} $ has been withdrawn successfully')
-#         return super().form_valid(form)
-    
 class WithdrawalMoneyView(TrasnctionMixinView):
     form_class = WithdrawForm
     title = 'Withdrawal Money'

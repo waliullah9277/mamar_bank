@@ -11,6 +11,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def send_authenticate_email(user, subject, template):
@@ -63,6 +65,24 @@ class UserBankAccountUpdateView(LoginRequiredMixin,View):
             return redirect('profile')  # Redirect to the user's profile page
         return render(request, self.template_name, {'form': form})
 
+
+    
+class UserBankAccountUpdateView1(LoginRequiredMixin,View):
+    template_name = 'accounts/profile_update.html'
+
+    def get(self, request):
+        form = UserUpdateForm(instance=request.user)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Profile Updated successfully!')
+            send_authenticate_email(self.request.user, 'Profile Updated', 'accounts/profileupdate_send_email.html')
+            return redirect('profile')  # Redirect to the user's profile page
+        return render(request, self.template_name, {'form': form})
+
     
 class PassWordChangeForm(LoginRequiredMixin, View):
     template_name = 'accounts/pass_change.html'
@@ -91,3 +111,21 @@ class PassWordChangeForm(LoginRequiredMixin, View):
         else:
             form = PasswordChangeForm(request.user)
         return render(request, self.template_name, {'form': form})
+    
+
+
+
+@login_required
+def profile_view(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # profile is the name of your URL
+    else:
+        form = ProfileUpdateForm(instance=request.user.profile)
+
+    return render(request, 'accounts/profile.html', {
+        'form': form,
+        'user': request.user
+    })
