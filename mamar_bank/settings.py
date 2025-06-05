@@ -12,6 +12,7 @@ import environ
 env = environ.Env(
     DEBUG=(bool, False)
 )
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Read .env file
@@ -24,23 +25,16 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 
 # Hosts allowed to connect
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1", 'mamar-banks-s9ge.onrender.com'])
-
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'mamar-bank-ytur.onrender.com',
-    'mamar-banks-s9ge.onrender.com',  # ei line add koro
+    'mamar-banks-s9ge.onrender.com',
 ]
 
-
-
 # CSRF trusted origins
-CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[
+CSRF_TRUSTED_ORIGINS = [
     'https://mamar-banks-s9ge.onrender.com',
-    'https://mamar-bank-ytur.onrender.com',
-    'https://127.0.0.1',
-])
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -71,7 +65,7 @@ ROOT_URLCONF = 'mamar_bank.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # Add your templates dirs here if any
+        'DIRS': [],  # Optional: add template dirs here if needed
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,7 +80,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mamar_bank.wsgi.application'
 
-# Database (using SQLite here)
+# Database configuration (SQLite by default)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -96,10 +90,10 @@ DATABASES = {
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # Localization
@@ -108,16 +102,17 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Static files
 STATIC_URL = 'static/'
 
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email settings loaded from .env
+# Email settings from .env
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env("EMAIL_HOST", default='smtp.gmail.com')
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
