@@ -11,43 +11,35 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url
 import environ
-env = environ.Env()
-environ.Env.read_env()
 
-# import environ
-# env = environ.Env()
-# environ.Env.read_env()
-
-# SECRET_KEY = env("SECRET_KEY")
-
-# import environ
-# import os
-
-env = environ.Env()
-# environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# BASE_DIR should be defined before reading .env
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Initialize environment variables
+env = environ.Env()
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+# Read the .env file in local development, ignore if it doesn't exist
+env.read_env(BASE_DIR / '.env')
 
+# SECRET_KEY: read from environment variable or .env
+# Provide a fallback ONLY for development - do NOT use fallback in production!
+SECRET_KEY = env("SECRET_KEY", default="django-insecure-fallback-secret-key")
 
-# Your secret key
-SECRET_KEY = env("SECRET_KEY")
-
-# SECURITY WARNING: keep the secret key used in production secret!
+print("SECRET_KEY:", SECRET_KEY)  # For debug only, remove in production
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=True)
 
-ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['https://mamar-bank-ytur.onrender.com','https://*.127.0.0.1']
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
+CSRF_TRUSTED_ORIGINS = env.list(
+    "CSRF_TRUSTED_ORIGINS",
+    default=[
+        'https://mamar-bank-ytur.onrender.com',
+        'https://*.127.0.0.1'
+    ]
+)
 
 # Application definition
 
@@ -62,7 +54,6 @@ INSTALLED_APPS = [
     'core',
     'transactions',
     'django.contrib.humanize',
-    # 'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -95,10 +86,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mamar_bank.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -106,30 +94,7 @@ DATABASES = {
     }
 }
 
-
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env("DB_NAME"),
-#         'USER': env("DB_USER"),
-#         'PASSWORD': env("DB_PASSWORD"),
-#         'HOST': env("DB_HOST"),
-#         'PORT': env("DB_PORT"),
-#     }
-# }
-
-# DATABASES = {
-#     'default': dj_database_url.config(      
-#         default='postgres://mamarbank_vv9l_user:ylUneUjN6pez7nhrkgi4BJWLMj2KWFM4@dpg-cn0e49la73kc7391qkdg-a.oregon-postgres.render.com/mamarbank_vv9l',
-#     )
-# }
-
-
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -145,39 +110,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+# Static files
 STATIC_URL = 'static/'
-
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+# Email config - read from environment
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = env("EMAIL_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
+EMAIL_HOST = env("EMAIL_HOST", default='smtp.gmail.com')
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+EMAIL_HOST_USER = env("EMAIL_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD", default="")
