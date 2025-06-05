@@ -11,35 +11,27 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 import environ
+env = environ.Env()
+environ.Env.read_env()
 
-# BASE_DIR should be defined before reading .env
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Initialize environment variables
-env = environ.Env()
+# Your secret key
+SECRET_KEY = env("SECRET_KEY")
+print("SECRET_KEY:", env.str("SECRET_KEY", default="NOT SET"))
 
-# Read the .env file in local development, ignore if it doesn't exist
-env.read_env(BASE_DIR / '.env')
+DEBUG = True
 
-# SECRET_KEY: read from environment variable or .env
-# Provide a fallback ONLY for development - do NOT use fallback in production!
-SECRET_KEY = env("SECRET_KEY", default="django-insecure-fallback-secret-key")
+ALLOWED_HOSTS = ["*"]
 
-print("SECRET_KEY:", SECRET_KEY)  # For debug only, remove in production
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DEBUG", default=True)
-
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
-
-CSRF_TRUSTED_ORIGINS = env.list(
-    "CSRF_TRUSTED_ORIGINS",
-    default=[
-        'https://mamar-bank-ytur.onrender.com',
-        'https://*.127.0.0.1'
-    ]
-)
+# *** CSRF_TRUSTED_ORIGINS ADD HERE WITH YOUR DEPLOYED DOMAIN ***
+CSRF_TRUSTED_ORIGINS = [
+    'https://mamar-banks-s9ge.onrender.com',   
+    'https://mamar-bank-ytur.onrender.com',    
+    'https://127.0.0.1',                       # local host if needed
+]
 
 # Application definition
 
@@ -86,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mamar_bank.wsgi.application'
 
-# Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -94,7 +85,6 @@ DATABASES = {
     }
 }
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -110,13 +100,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
+
 USE_TZ = True
 
-# Static files
 STATIC_URL = 'static/'
 
 MEDIA_URL = '/media/'
@@ -124,10 +115,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email config - read from environment
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = env("EMAIL_HOST", default='smtp.gmail.com')
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
-EMAIL_PORT = env.int("EMAIL_PORT", default=587)
-EMAIL_HOST_USER = env("EMAIL_USER", default="")
-EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD", default="")
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env("EMAIL_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
