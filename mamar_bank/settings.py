@@ -24,7 +24,16 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 
 # Hosts allowed to connect
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1", 'mamar-banks-s9ge.onrender.com'])
+
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'mamar-bank-ytur.onrender.com',
+    'mamar-banks-s9ge.onrender.com',  # ei line add koro
+]
+
+
 
 # CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[
